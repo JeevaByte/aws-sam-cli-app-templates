@@ -25,6 +25,6 @@ sam deploy --guided
 Install the application dependencies and test dependencies, then run pytest.
 
 ```bash
-python -m pip install -r app/requirements.txt pytest pytest-mock
+python -m pip install -r app/requirements.txt -r tests/requirements.txt
 python -m pytest tests/unit
 ```
