@@ -1,8 +1,14 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  {{cookiecutter.project_name}}
+  {{ cookiecutter.project_name }}
+
   SAM Template for a FastAPI application
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 10
 
 Resources:
   FastApiFunction:
@@ -11,13 +17,23 @@ Resources:
       CodeUri: app/
       Handler: main.handler
       Runtime: python3.13
+      {%- if cookiecutter.architectures.value != []%}
       Architectures:
-        - x86_64
+      {%- for arch in cookiecutter.architectures.value %}
+        - {{arch}}
+      {%- endfor %}
+      {%- endif %}
       Events:
         FastApiApi:
-          Type: HttpApi # Best for FastAPI (low latency/cost)
+          Type: HttpApi
 
 Outputs:
   FastApiApi:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/" 
+    Value: !Sub "https://${ServerlessHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/"
+  FastApiFunction:
+    Description: "FastAPI Lambda Function ARN"
+    Value: !GetAtt FastApiFunction.Arn
+  FastApiFunctionIamRole:
+    Description: "Implicit IAM Role created for FastAPI function"
+    Value: !GetAtt FastApiFunctionRole.Arn

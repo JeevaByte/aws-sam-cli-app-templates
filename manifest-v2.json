@@ -1415,9 +1415,8 @@
     {
       "directory": "python3.13/cookiecutter-aws-sam-python-fastapi",
       "displayName": "FastAPI Framework Starter",
-      "description": "SAM Template for a FastAPI application with Python 3.13",
-      "dependencyManager": "cli-package",
-      "appTemplate": "hello-world",
+      "dependencyManager": "pip",
+      "appTemplate": "fastapi-hello-world",
       "packageType": "Zip",
       "useCaseName": "Serverless API"
     }
